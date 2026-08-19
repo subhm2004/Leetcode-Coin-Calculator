@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="rim" x1="8" y1="4" x2="40" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF3D0"/>
+      <stop offset="1" stop-color="#C96D08"/>
+    </linearGradient>
+    <linearGradient id="face" x1="10" y1="7" x2="38" y2="41" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFE9A8"/>
+      <stop offset="0.45" stop-color="#FFC24B"/>
+      <stop offset="1" stop-color="#E8860F"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Coin body -->
+  <circle cx="24" cy="24" r="23" fill="url(#rim)"/>
+  <circle cx="24" cy="24" r="19" fill="url(#face)"/>
+
+  <!-- Inner rim: what makes it read as a coin rather than a dot at 16px -->
+  <circle cx="24" cy="24" r="14.5" fill="none" stroke="#A85E06" stroke-opacity="0.55" stroke-width="2"/>
+
+  <!-- Specular highlight -->
+  <ellipse cx="16.5" cy="13.5" rx="6" ry="3.2" transform="rotate(-32 16.5 13.5)" fill="#fff" fill-opacity="0.42"/>
+</svg>
