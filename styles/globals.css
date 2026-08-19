@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 240 20% 4%;
+        --foreground: 240 20% 96%;
+
+        --card: 240 16% 7%;
+        --card-foreground: 240 20% 96%;
+
+        --popover: 240 18% 6%;
+        --popover-foreground: 240 20% 96%;
+
+        --primary: 35 100% 54%;
+        --primary-foreground: 240 25% 5%;
+
+        --secondary: 240 10% 13%;
+        --secondary-foreground: 240 20% 96%;
+
+        --muted: 240 10% 12%;
+        --muted-foreground: 240 8% 62%;
+
+        --accent: 240 10% 15%;
+        --accent-foreground: 240 20% 96%;
+
+        --destructive: 350 90% 62%;
+        --destructive-foreground: 240 25% 5%;
+
+        --border: 240 12% 16%;
+        --input: 240 12% 16%;
+        --ring: 35 100% 54%;
+
+        --radius: 0.9rem;
+
+        /* Brand accents used by gradients + glows */
+        --gold: 38 100% 55%;
+        --amber: 45 100% 62%;
+        --cyan: 187 92% 55%;
+        --violet: 258 90% 70%;
+        --emerald: 158 70% 50%;
+        --rose: 350 95% 68%;
+    }
+
+    /* The app is dark-first; .dark keeps parity with the class on <html>. */
+    .dark {
+        color-scheme: dark;
+    }
+
+    * {
+        @apply border-border;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "cv02", "cv03", "cv04", "ss01";
+        overflow-x: hidden;
+    }
+
+    ::selection {
+        background: hsl(var(--gold) / 0.28);
+        color: hsl(var(--foreground));
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: hsl(var(--background));
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(hsl(var(--gold) / 0.5), hsl(var(--violet) / 0.5));
+        border-radius: 99px;
+        border: 2px solid hsl(var(--background));
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(hsl(var(--gold) / 0.8), hsl(var(--violet) / 0.8));
+    }
+}
+
+@layer components {
+    /* Frosted panel used for every surface in the app. */
+    .glass {
+        background:
+            linear-gradient(160deg, hsl(0 0% 100% / 0.06) 0%, hsl(0 0% 100% / 0.015) 45%, hsl(0 0% 100% / 0.04) 100%);
+        backdrop-filter: blur(18px) saturate(140%);
+        -webkit-backdrop-filter: blur(18px) saturate(140%);
+        border: 1px solid hsl(0 0% 100% / 0.08);
+        box-shadow:
+            0 1px 0 0 hsl(0 0% 100% / 0.06) inset,
+            0 24px 60px -28px hsl(240 60% 2% / 0.9);
+    }
+
+    /* Animated conic border. Wrap content in a child with its own background. */
+    .conic-border {
+        position: relative;
+        isolation: isolate;
+    }
+
+    .conic-border::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        padding: 1px;
+        background: conic-gradient(from var(--angle, 0deg),
+                hsl(var(--gold) / 0.9),
+                hsl(var(--violet) / 0.8),
+                hsl(var(--cyan) / 0.8),
+                hsl(var(--gold) / 0.9));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: -1;
+        animation: spin-border 4s linear infinite;
+    }
+
+    .conic-border[data-active="true"]::before,
+    .conic-border:hover::before {
+        opacity: 1;
+    }
+
+    /* Cursor-tracked highlight; components set --mx / --my on mousemove. */
+    .spotlight::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%),
+                hsl(var(--gold) / 0.14),
+                transparent 65%);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+    }
+
+    .spotlight:hover::after {
+        opacity: 1;
+    }
+
+    .text-gradient-gold {
+        background: linear-gradient(120deg,
+                hsl(var(--amber)) 0%,
+                hsl(var(--gold)) 30%,
+                #fff6de 50%,
+                hsl(var(--gold)) 70%,
+                hsl(var(--amber)) 100%);
+        background-size: 220% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: shimmer 6s ease-in-out infinite;
+    }
+
+    .text-gradient-cool {
+        background: linear-gradient(120deg, hsl(var(--cyan)), hsl(var(--violet)) 60%, hsl(var(--gold)));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* Fine dot mesh that fades out toward the bottom of the viewport. */
+    .grid-mesh {
+        background-image:
+            linear-gradient(hsl(0 0% 100% / 0.035) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(0 0% 100% / 0.035) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 20%, transparent 75%);
+        -webkit-mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 20%, transparent 75%);
+    }
+
+    .noise {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    }
+}
+
+@layer utilities {
+    .glow-gold {
+        box-shadow: 0 0 0 1px hsl(var(--gold) / 0.35), 0 0 34px -6px hsl(var(--gold) / 0.55);
+    }
+
+    .glow-text-gold {
+        text-shadow: 0 0 28px hsl(var(--gold) / 0.55);
+    }
+
+    .preserve-3d {
+        transform-style: preserve-3d;
+    }
+
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes spin-border {
+    to {
+        --angle: 360deg;
+    }
+}
+
+@keyframes shimmer {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
