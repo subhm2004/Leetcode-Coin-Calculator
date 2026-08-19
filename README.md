@@ -29,7 +29,6 @@ LeetCoins for any reward in the LeetCode Store.
 - [Shareable links](#shareable-links)
 - [Accessibility](#accessibility)
 - [Customising](#customising)
-- [Git history helper](#git-history-helper)
 - [Deployment](#deployment)
 - [FAQ](#faq)
 - [Credits](#credits)
@@ -141,7 +140,6 @@ Open <http://localhost:3000>.
 | `npm run build` | Production build |
 | `npm run start` | Serve the production build |
 | `npm run lint` | ESLint |
-| `./make_commits.sh` | Seed a clean git history ([details](#git-history-helper)) |
 
 > **Note:** `next dev` and `next build` share the `.next` directory. Stop the dev server
 > before running a build, or the dev server will start returning 500s.
@@ -337,22 +335,6 @@ change it, also update:
 
 1. The summary cards in [components/HowItWorks.js](components/HowItWorks.js)
 2. The [coin table](#where-coins-come-from) above
-
----
-
-## Git history helper
-
-`make_commits.sh` seeds a clean, logical git history instead of one giant initial commit.
-
-```bash
-./make_commits.sh --dry-run   # preview, changes nothing
-./make_commits.sh             # create the commits
-```
-
-- Runs `git init` if there's no repo yet
-- **Idempotent** — running it twice is a no-op
-- Never pushes, never forces, never touches a remote
-- Stops with instructions if `git user.email` isn't configured
 
 ---
 
